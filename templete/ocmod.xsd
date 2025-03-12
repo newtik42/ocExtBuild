@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!--
+<![CDATA[]]>
+-->
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:attribute name="regex" type="xs:boolean" default="false">
+        <xs:annotation>
+            <xs:documentation>
+                Необов'язковий атрибут "regex" для вказівки, чи слід шукати шаблон регулярного виразу.
+                default=true
+                Якщо вірно, дані пошуку повинні бути дійсними шаблонами регулярних виразів
+                Залишити або встановити значення FALSE для звичайного пошуку рядків (за умовчанням)
+                Не застосовується до і iafter 
+            </xs:documentation>
+        </xs:annotation>                                                    
+
+    </xs:attribute>
+                                            
+    <xs:attribute name="index">                                                    
+        <xs:annotation>
+            <xs:documentation xml:lang="en"><![CDATA[
+                Необов'язковий, вказує на які екземпляри пошукового тегу слід виконувати<br>
+                default=true
+                Якщо рядок пошуку є "ехо" і є 5 ехо в файлі, але тільки хочете замінити 1 і 3, використовуйте index = "1,3"
+                Розмежовані комами для декількох екземплярів, які починаються з "1" - невірно з "0"
+                Залиште або встановіть значення FALSE, щоб замінити всі екземпляри. (значення за умовчанням - істина) ]]>
+            </xs:documentation>
+            <xs:documentation xml:lang="ru">
+                Необов'язковий, вказує на які екземпляри пошукового тегу слід виконувати2
+                default=true
+                Якщо рядок пошуку є "ехо" і є 5 ехо в файлі, але тільки хочете замінити 1 і 3, використовуйте index = "1,3"
+                Розмежовані комами для декількох екземплярів, які починаються з "1" - невірно з "0"
+                Залиште або встановіть значення FALSE, щоб замінити всі екземпляри. (значення за умовчанням - істина) 
+            </xs:documentation>
+            <xs:documentation xml:lang="ua">
+                Необов'язковий, вказує на які екземпляри пошукового тегу слід виконувати3
+                default=true
+                Якщо рядок пошуку є "ехо" і є 5 ехо в файлі, але тільки хочете замінити 1 і 3, використовуйте index = "1,3"
+                Розмежовані комами для декількох екземплярів, які починаються з "1" - невірно з "0"
+                Залиште або встановіть значення FALSE, щоб замінити всі екземпляри. (значення за умовчанням - істина) 
+            </xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="trim">
+        <xs:annotation>
+            <xs:documentation>
+                Необов'язковий атрибут "trim" встановлюється як true | false
+                default=true
+                true зменшить пробіли і прориви ліній.
+                залиште або встановіть значення true для обрізання. (значення за умовчанням - істина) 
+            </xs:documentation>
+        </xs:annotation>                                                    
+    </xs:attribute>
+    
+    <xs:attribute name="position">
+        <xs:annotation>
+            <xs:documentation>
+                Обов'язковий атрибут "позиція" встановлюється before|after|replace|top|bottom 
+                замінити замінить дані в тезі пошуку на дані в тезі додавання . (за умовчанням)
+                перед тим, як вставити дані додати до даних пошуку
+                після додавати дані після даних пошуку
+                top буде вставляти дані додавання у верхній частині файлу. Дані пошуку ігноруються.
+                Внизу буде вставлено дані додавання в нижній частині файлу. Дані пошуку ігноруються.
+                все буде повністю замінити весь код у файлі з додаванням даних. Дані пошуку ігноруються. Застарілий станом на 2.4.0
+                Перед тим, як вставити код перед пошуковим рядком, замість рядка
+                Після цього буде вставлено код після пошуку в рядку замість рядка 
+            </xs:documentation>
+        </xs:annotation>
+        
+        <xs:simpleType>                                                        
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="replace"/>
+                <xs:enumeration value="before"/>
+                <xs:enumeration value="after"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:attribute>
+    
+    <xs:simpleType name="error">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="skip">
+                <xs:annotation>                                
+                    <xs:documentation>
+                        означає, що він просто ігноруватиме цей файл
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="log">
+                <xs:annotation>                     
+                    <xs:documentation>
+                        такий же, як і пропуск, але реєструє помилку. (за умовчанням)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="abort">
+                <xs:annotation>                                
+                    <xs:documentation>
+                        означає ввести помилку і скасувати інші операції в цьому конкретному XML-скрипті. Він не повертає зміни до інших файлів, вже зроблених у цьому сценарії, і не зупиняє інші файли XML.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:element name="modification">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="code" type="xs:string"/>
+                <xs:element name="version" type="xs:string"/>
+                <xs:element name="author" type="xs:string"/>
+                <xs:element name="link" type="xs:string"/>
+                
+                <xs:element name="file" maxOccurs="unbounded">                    
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="operation">
+                                <xs:complexType>                                    
+                                    <xs:sequence>
+                                        
+                                        <xs:element name="search">
+                                            <xs:complexType  mixed="true">                                                
+                                                <xs:attribute ref="regex" use="optional" default="true" type="xs:boolean"/>
+                                                <xs:attribute ref="index" use="optional"/>
+                                                <xs:attribute ref="trim" use="optional"/> 
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="add">
+                                            <xs:complexType>
+                                                <xs:attribute ref="position" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="error" type="error"/>  
+                                </xs:complexType>
+                            </xs:element>                            
+                        </xs:sequence>
+                        <xs:attribute name="path" type="xs:string" use="required">
+                            <xs:annotation>                                
+                                <xs:documentation>
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="error" type="error"/>  
+                    </xs:complexType>                                     
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
