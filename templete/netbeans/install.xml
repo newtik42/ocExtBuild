@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/newtik42/ocExtBuild/refs/heads/main/templete/ocmod.xsd'>
+    <name>${name}</name>
+    <code>${name}</code>
+    <version>1.0.0</version>
+    <author>NewTik</author>
+    <link>https://newtik-opencart.com/</link>
+    
+    <!-- START Admin -->
+    
+    <file path="">
+        <operation>
+            <search><![CDATA[]]></search>
+            <add position=""><![CDATA[
+
+// start ${name}
+                
+
+
+// end ${name}
+
+            ]]></add>
+        </operation>
+    </file>
+    
+    <file path="">
+        <operation>
+            <search><![CDATA[]]></search>
+            <add position=""><![CDATA[
+
+<!-- start ${name} -->
+                
+
+
+<!-- end ${name} -->
+
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- END Admin -->
+    
+    
+    <!-- START Catalog -->
+    <file path="">
+        <operation >
+            <search ><![CDATA[]]></search>
+            <add position=""><![CDATA[
+
+//start ${name}
+                
+
+
+//end ${name}
+
+            ]]></add>
+        </operation>
+    </file>
+    
+    <file path="">
+        <operation>
+            <search><![CDATA[]]></search>
+            <add position=""><![CDATA[
+
+<!-- start ${name} -->
+                
+
+
+<!-- end ${name} -->
+
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- END Catalog -->
+
+
+</modification>
