@@ -1,0 +1,48 @@
+{% import "tool/legacy/extra.twig" as extra %}
+
+{#
+
+i18n = {label, help, placeholder}
+input = {name, value, type, error, items}
+items = {items, id, name}
+
+value = {
+            key_name:'name', 
+            data:_value_,
+            data_one:'', //використовується для шаблонів
+        }
+
+optionals = {required, autocomplete, labelBox}
+    labelBox = col|ver //col - цифра, ver bool
+
+#}
+
+{% macro Select(input, i18n, optionals) %}   
+    <select name="{{ input.name }}" id="{{ input.name }}" class="selectpicker form-control" data-icon-base="fa" 
+            data-tick-icon="fa-check" title="{{ i18n.text_select }}">
+        {% for item in input.items.items %}
+            <option value="{{ item[input.items.id] }}"{{ item[input.items.id] == input.value ? ' selected="selected"' }}
+                    >{{ item[input.items.name] }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+
+
+{#
+{{ forms.MultiSelect(order_statuses, 'order_status_id', 'name',
+    'setting[autosend][list][' ~ row ~ '][order_status_id]', setting.autosend.list[row]) }}
+#}
+{% macro MultiSelect(input, i18n, optionals) %}    
+    <div class="well well-sm" style="height: 150px; overflow: auto;">
+        {% for item in input.items.items %}
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="{{ input.name }}[]" value="{{ item[input..id] }}" 
+                           {% for value_ in input.value %}{{ value_ == item[input.items.id] ? 'checked="checked"':'' }}{% endfor %}/> 
+                    {{ item[input.items.name] }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

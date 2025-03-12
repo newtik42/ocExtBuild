@@ -1,0 +1,68 @@
+{#
+input = {name, value(s)}
+for InputTextLangs
+{#
+data_one використовується для шаблонів
+Якщо temp = 'values[${id}][description][%s][name]'
+value(s) = {
+            key_name:'name', 
+            data:_value_,
+            temp:'',
+        }
+#}
+name = {s:'',e:'') or ''
+i18n = {label, help, placeholder}
+help = {
+    button <- text|box <- html
+}
+
+optionals = {required, autocomplete}
+#}
+
+
+{% macro Group(content, optionals) %}  
+    <div class="form-group {{ optionals.required ? 'required':'' }}">
+        {{ content }}
+    </div>
+{% endmacro %} 
+
+{% macro LangsText(languages, teb_name, input, type, entry, help) %}
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="{{ name }}"><span data-toggle="tooltip" title="{{ help }}">{{ entry }}</span></label>
+        <div class="col-sm-10">
+            {{ _self.InputTextLangs(languages, teb_name, name, value, type, entry, help) }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+
+{#================================================================================================#}
+{#                                          checkbox                                              #}
+
+{##
+ list = array
+itemKey = {itemId, itemName}
+inpyt = {name, value(s)}
+options = {col, height}
+#}
+
+{% macro MiltiCheckboxColsV2(items, itemKey, input, options) %}
+    
+<div class="well well-sm" style="height: {{ options.height?? '150px'}}; overflow: auto;">
+    {% for item in items %}
+    <div class="checkbox col-sm-{{ options.col }}">
+        <label>
+            <input type="checkbox" name="{{ input.name }}[]" value="{{ item[itemKey.itemId] }}" {% for value in input.values %}{{ value == item[itemKey.itemId] ? 'checked="checked"':'' }}{% endfor %}> 
+            {{ item[itemKey.itemName] }}
+        </label>   
+    </div>
+    {% endfor %}
+</div>
+    
+{% endmacro %}
+
+
+
+{#                                          checkbox                                              #}
+{#================================================================================================#}

@@ -1,0 +1,64 @@
+{% import "extension/extension/tool/macros.twig" as forms %}
+{% if box == "heading" %}
+    <style>
+        .success{color: green;}
+        .warning{color: orange;}
+        .critical{color: red;}
+    </style>
+    <span class="pull-right">
+        <b style="font-size: 18px;">
+            
+            <span data-toggle="tooltip" data-placement="bottom" title="{{ text_help }}">
+                <i class="fa {{ class_changelog_icon }} {{ class_changelog_status }}"></i> 
+            </span>
+                {{ module_version }}
+            {% if accum_changelogs %}
+                <a href="#tab-changelog" onclick='showTabchangelog()' data-toggle="tab"><i class="fa fa-arrow-circle-o-up" style="color: green;"></i> </a>
+                {{ forms.addTabJsA1('tab_changelog', '.panel-body', '<i class="fa fa-code-fork"></i> ' ~ text_tab_changelog, 'changelog', viewTabBody) }}
+                <script>
+                    function showTabchangelog() {
+                        $('a[href="#tab-changelog"]').tab("show");
+                    }
+                </script>
+            {% endif %}
+        </b>
+    </span>
+{% endif %}
+
+{% if box == "viewTabBody" %}
+    <style>
+        .disabled{background-color: #eee;}
+        .fix{color: #971616;}
+        .add{color: #2196f3cc;}
+    </style>
+    {% for version,changelog in accum_changelogs %}
+
+        <div class="form-group">    
+            <div class="col-11">
+                <label class="form-label">{{ version }}({{ changelog.date_update }})</label> 
+                
+                {{ description }}
+                <div class="disabled">
+                    {%  if changelog.add %}
+                        {{ text_changelog_add }}<br>
+                        <div class="add">
+                            {% for add in changelog.add %}
+                                * {{ add }}<br>
+                            {% endfor %}
+                        </div> 
+                    {% endif %}
+                    {%  if changelog.fix %}
+                        {{ text_changelog_fix }}<br>
+                        <div class="fix">
+                            {% for fix in changelog.fix %}
+                                * {{ fix }}<br>
+                            {% endfor %}
+                        </div> 
+                    {% endif %}
+                </div>    
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endif %}

@@ -1,0 +1,674 @@
+{% macro Group(content, required) %}  
+    <div class="form-group{% if required %} required{% endif %}">
+        {{ content }}
+    </div>
+{% endmacro %} 
+
+{% macro GroupA2(content, label_name, label_entry, label_help, required) %}  
+    <div class="form-group{% if required %} required{% endif %}">
+        <label class="col-sm-2 control-label" for="{{ label_name }}">
+            {% if label_help %}<span data-toggle="tooltip" title="{{ label_help }}">{{ label_entry }}</span>{% else %}{{ label_entry }}{% endif %}
+        </label>
+        <div class="col-sm-10">
+        {{ content }}
+        </div>
+    </div>
+{% endmacro %} 
+
+{% macro GroupOnOffSwitch(name, value, entry, help ) %}
+    {{ _self.group_onoffswitch(name, value, entry, help ) }}
+{% endmacro %}
+
+{% macro group_onoffswitch(name, value, entry, help ) %}                
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="{{ name }}">{% if help %}<span data-toggle="tooltip" title="{{ help }}">{{ entry }}</span>{% else %}{{ entry }}{% endif %}</label>
+        <div class="col-sm-10">
+            {{ _self.onoffswitch(name, value) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro onoffswitchStyle() %}
+    <style>
+        .onoffswitch {
+            position: relative;
+            width: 55px;
+            display: inline-block;
+            font-size: 80%;
+        }
+        .onoffswitch .onoffswitch-label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid hsl(0, 0%, 90%);
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+            margin: 0;
+        }
+        .onoffswitch .onoffswitch-inner {
+            width: 200%;
+            margin-left: -100%;
+            -webkit-transition: margin 0.15s ease-in-out;
+            -o-transition: margin 0.15s ease-in-out;
+            -moz-transition: margin 0.15s ease-in-out;
+            transition: margin 0.15s ease-in-out;
+        }
+        .onoffswitch .onoffswitch-inner:before,
+        .onoffswitch .onoffswitch-inner:after {
+            float: left;
+            width: 50%;
+            height: 24px;
+            padding: 0;
+            line-height: 24px;
+            font-size: 80%;
+            color: hsl(0, 0%, 100%);
+            font-weight: normal;
+            -moz-box-sizing:border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .onoffswitch .onoffswitch-inner:before {
+            content: "ON";
+            padding-left:10px;
+            background-color:hsl(203, 100%, 39.1569%);
+            color:hsl(0, 0%, 100%);
+        }
+        .processed_in .onoffswitch .onoffswitch-inner:before {
+            content: "\2713";
+            padding-left:10px;
+            background-color:hsl(203, 100%, 39.1569%);
+            color:hsl(0, 0%, 100%);
+            font-size:14px;
+        }
+        .onoffswitch .onoffswitch-inner:after {
+            content: "OFF";
+            padding-right: 10px;
+            background-color: hsl(0, 0%, 98%);
+            color: hsl(0, 0%, 24%);
+            text-align: right;
+        }
+        .processed_in .onoffswitch .onoffswitch-inner:after {
+            content: "\274C";
+            padding-right: 10px;
+            background-color: hsl(0, 0%, 98%);
+            color: hsl(0, 0%, 24%);
+            text-align: right;
+        }
+        .onoffswitch .onoffswitch-switch {
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            background: hsl(0, 0%, 100%);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            -moz-border-radius: 50%;
+            -webkit-border-radius:50%;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            bottom: 0;
+            right: 35px;
+            -webkit-transition: right 0.15s ease-in-out;
+            -o-transition: right 0.15s ease-in-out;
+            -moz-transition: right 0.15s ease-in-out;
+            transition: right 0.15s ease-in-out;
+        }
+        .toggle-group {
+            position: relative;
+            height: 27px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding-top:0;
+        }
+        .toggle-group input[type=checkbox] {
+            position: absolute;
+            left: 10px;
+        }
+        .toggle-group input[type=checkbox]:checked ~ .onoffswitch .onoffswitch-label .onoffswitch-inner {
+            margin-left: 0;
+        }
+        .toggle-group input[type=checkbox]:checked ~ .onoffswitch .onoffswitch-label .onoffswitch-switch {
+            right: 1px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+        .toggle-group input[type=checkbox]:focus ~ .onoffswitch {
+            outline: thin dotted #333;
+            outline: 0;
+        }
+        .toggle-group label {
+            position: absolute;
+            cursor: pointer;
+            padding-left: 65px;
+            display: inline-block;
+            text-align: left;
+            line-height: 24px;
+            z-index: 1;
+            height: 24px;
+            font-weight: 200;
+            left:0
+        }
+    </style>
+{% endmacro %}
+
+{% macro onoffswitch(name, value) %}
+    <div class="toggle-group">
+        <input type='hidden' value='0' name='{{ name }}'>
+        <input type="checkbox" name="{{ name }}" value='1'  {{ value ? 'checked' }} id="{{ name }}" tabindex="1">
+        <label for="{{ name }}"></label>
+        <div class="onoffswitch pull-left" aria-hidden="true">
+            <div class="onoffswitch-label">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro onoffswitchA1(name, value) %}
+    <div class="toggle-group">        
+        <input type='hidden' value='0' name='{{ name }}'>
+        <input type="checkbox" name='{{ name }}' {{ value ? 'checked' }} id="{{ name }}" tabindex="1">
+        <label for="{{ name }}"></label>
+        <div class="onoffswitch pull-left" aria-hidden="true">
+            <div class="onoffswitch-label">
+                <div class="onoffswitch-inner"></div>
+                <div class="onoffswitch-switch"></div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro GroupInputTextLangs(languages, teb_name, name, value, type, entry, help) %}
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="{{ name }}"><span data-toggle="tooltip" title="{{ help }}">{{ entry }}</span></label>
+        <div class="col-sm-10">
+            {{ _self.InputTextLangs(languages, teb_name, name, value, type, entry, help) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro GroupInputTextLangsA1(languages, name, values, entry, help) %}
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="{{ name }}"><span data-toggle="tooltip" title="{{ help }}">{{ entry }}</span></label>
+        <div class="col-sm-10">
+            {{ _self.InputTextLangsA1(languages, name, values, entry, help) }}
+        </div>
+    </div>
+{% endmacro %}
+{#
+data_one використовується для шаблонів
+value = {
+            key_name:'name', 
+            data:_value_,
+            data_one:'',
+        }
+#}
+{% macro InputTextLangs(languages, teb_name, name, values, type, entry, help) %}
+    <ul class="nav nav-tabs" role="tablist">
+        {% for language_id, language in languages %}
+            <li class="{{ loop.first ? 'active' }}"><a href="#{{ teb_name }}_language{{ language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+    </ul>
+    <div class="tab-content">
+        {% for language_id, language in languages %}
+            <div role="tabpanel" class="tab-pane{{ loop.first ? ' active' }}" id="{{ teb_name}}_language{{ language_id }}">
+                {{ _self.InputS("text", name|format(language_id), 
+                    (values.temp?values.temp|format(language_id):(values.key_name?values.data[language_id][values.key_name]:values[language_id])), entry, help) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro InputTextLangsA1(languages, name, values) %}
+    {% for language_id,language in languages %}
+        <div class="input-group">
+            <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"></span>
+            {{ _self.InputS("text", name|format(language_id), 
+                (values.temp?values.temp|format(language_id):(values.key_name?values.data[language_id][values.key_name]:values[language_id])), entry, help) }}
+        </div>
+    {% endfor %}  
+{% endmacro %}
+
+{% macro InputTextLangs_A1(languages, name, values) %}
+    {% for language_id,language in languages %}
+        <div class="input-group">
+            <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"></span>
+            <input name="{{ name ~ "[" ~ language_id  ~ "]" }}" value="{{ values[language_id] }}" class="form-control">
+        </div>
+    {% endfor %}  
+{% endmacro %}
+
+
+
+{% macro TextAreaTextLangsA1(languages, name, value) %}
+    {% for language in languages %}
+        <div class="input-group">
+            <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"></span>
+            <input name="{{ name }}" value="{{ value }}" class="form-control">
+        </div>
+    {% endfor %}  
+{% endmacro %}
+
+{#================================================================================================#}
+{#                                          helpe                                                 #}
+
+{% macro HeplTooltip(text) %}
+    <span data-toggle="tooltip" title="{{ text }}"></span>
+{% endmacro %}
+
+{% macro HeplBox(id, button_text, text) %}
+    {
+    button: '<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#heplbox{{ id }}" aria-expanded="false" aria-controls="heplbox{{ id }}">{{ button_text }}</button>',
+    box: '<div id="heplbox{{ id }}" class="collapse well">{{ text }}</div>'
+    }
+{% endmacro %}
+
+{#                                          helpe                                                 #}
+{#================================================================================================#}
+
+
+{#================================================================================================#}
+{#                                          inputs                                                #}
+{#
+input = {name, value}
+i18n = {label, help, placeholder}
+optionals = {required, autocomplete}
+#}
+{% macro GroupInputB1(input, i18n, optionals) %}
+    {{ _self.Group(_self.LabelInput(input.name, input.value, i18n.label, i18n.help, i18n.placeholder, optionals.autocomplete), optionals.required) }}
+{% endmacro %}
+
+
+{% macro GroupInput(name, value, label, help, placeholder, required, autocomplete) %}
+    {{ _self.Group(_self.LabelInput(name, value, label, help, placeholder), required) }}
+{% endmacro %}
+
+{% macro LabelInput(name, value, label, help, placeholder, autocomplete) %}
+    <label class="col-sm-2 control-label">{{ label }} {{ help.button }}</label>
+    <div class="col-sm-10" {{ autocomplete?'autocomplete':'' }}>
+        {{help.box }}
+        {% if autocomplete %}
+            <input type="hidden" name="{{ name }}" value="{{ value.id }}" class="form-control" />
+            <input type="text" {{ name }} value="{{ value.text }}" placeholder="{{ placeholder }}" class="form-control" />
+        {% else %}
+            <input type="text" name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}" class="form-control" />
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{#
+checked="checked"
+#}
+{% macro inputS(type, name, value, entry) %}
+    <input type="{{ type }}" name="{{ name }}" value="{{ value }}" placeholder="{{ entry }}" class="form-control" />
+{% endmacro %}
+
+
+
+{% macro inputArea(input, i18n, optionals) %}
+    <textarea name="{{ input.name }}" rows="{{ optionals.row ?? "5" }}" placeholder="{{ i18n.placeholder }}" {{ optionals.id?'id="'~optionals.id~'"' }} 
+    class="form-control">{{ input.value }}</textarea>
+{% endmacro %}
+
+{#
+
+optionals {labelBox:col|ver} col - цифра, ver bool
+#}
+{% macro inputAreaLabel(input, i18n, optionals) %}
+    {% set col_def = optionals.labelBox.ver??(optionals.labelBox.col??2) %}
+    <label class="{{ optionals.labelBox.ver?'': "col-sm-" ~ optionals.labelBox.col  }} control-label">{{ i18n.label }} {{ help.button }}</label>
+    <div class="col-sm-{{ 12 - col_def }}">
+        {{help.box }}
+        {{ _self.inputArea(input, i18n, optionals) }}
+    </div>        
+{% endmacro %}
+
+{% macro GroupinputAreaLabel(input, i18n, optionals) %}
+    {{ _self.Group( _self.inputAreaLabel(input, i18n, optionals), optionals.required) }}   
+{% endmacro %}
+
+
+{% macro input(name, value, type, entry) %}
+    <div class="input-group">
+        <input type="{{ type }}" name="{{ name }}" 
+               value="{{ value }}" 
+               placeholder="{{ entry }}" class="form-control" />
+    </div>
+{% endmacro %}
+
+{% macro inputA2(name, value, type, entry, text) %}
+    <div class="input-group">
+        <input type="{{ type }}" name="{{ name }}" 
+               value="{{ value }}" 
+               placeholder="{{ entry }}" class="form-control" />
+        <span class="input-group-addon">{{ text }}</span>
+    </div>
+{% endmacro %}
+
+{#
+input = {name, value}
+i18n = {label, help, placeholder}
+optionals = {required, autocomplete}
+#}
+
+
+{#                                          inputs                                                #}
+{#================================================================================================#}
+
+
+{#================================================================================================#}
+{#                                          select                                                #}
+
+{#
+{{ forms.GroupSelect(currencys, 'code', 'title', 'setting[feed][currency]',
+        setting.feed.currency, text_feed_currency, text_help_feed_currency) }}
+#}
+
+{% macro Select(items, i_id, i_name, name, value) %}   
+    <select name="{{ name }}" id="{{ name }}" class="selectpicker form-control" data-icon-base="fa" 
+            data-tick-icon="fa-check" title="{{ text_select }}">
+        {% for item in items %}
+            <option value="{{ item[i_id] }}"{{ item[i_id] == value ? ' selected="selected"' }}>{{ item[i_name] }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro SelectA1(items, i_id, i_name, name, value, entry, help, required) %}    
+    <label class="col-sm-2 control-label" for="input-pack_type">
+        {%if help %}<span data-toggle="tooltip" title="{{ help }}"></span>{% endif %}
+        {{ entry }}
+    </label>
+    <div class="col-sm-10">
+        <select name="{{ name }}" id="{{ name }}" class="selectpicker form-control" data-icon-base="fa" 
+                data-tick-icon="fa-check" title="{{ text_select }}">
+            {% for item in items %}
+                <option value="{{ item[i_id] }}"{{ item[i_id] == value ? ' selected="selected"' }}>{{ item[i_name] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+
+{% macro GroupSelect(items, i_id, i_name, name, value, entry, help, required) %}
+    <div class="form-group {%if required %}required{% endif %}">
+        <label class="col-sm-2 control-label" for="input-pack_type">
+            {%if help %}<span data-toggle="tooltip" title="{{ help }}"></span>{% endif %}
+            {{ entry }}
+        </label>
+        <div class="col-sm-10">
+            <select name="{{ name }}" id="{{ name }}" class="selectpicker form-control" data-icon-base="fa" 
+                    data-tick-icon="fa-check" title="{{ text_select }}">
+                {% for item in items %}
+                    <option value="{{ item[i_id] }}"{{ item[i_id] == value ? ' selected="selected"' }}>{{ item[i_name] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro SelectStores(stores,value, path) %}
+    {% if stores  %}
+        {{ text_store }}
+        <select SelectStores
+                onchange="location.href = 'index.php?route={{ path }}' +
+                            '&user_token=' + getURLVar('user_token') + '&store_id=' + this.value;"
+                class="form-control" style="display: inline; width: auto;">
+            {% for store in stores %}
+                <option value="{{ store.store_id }}" 
+                        {{ store.store_id == value?'selected="selected"':'' }}>{{ store.name }}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
+{% endmacro %}
+
+{#
+{{ forms.MultiSelect(order_statuses, 'order_status_id', 'name',
+    'setting[autosend][list][' ~ row ~ '][order_status_id]', setting.autosend.list[row]) }}
+#}
+{% macro MultiSelect(items, i_id, i_name, name, values) %}    
+    <div class="well well-sm" style="height: 150px; overflow: auto;">
+        {% for item in items %}
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="{{ name }}[]" value="{{ item[i_id] }}" 
+                    {% for value in values %}{{ value == item[i_id] ? 'checked="checked"':'' }}{% endfor %}/> 
+                     {{ item[i_name] }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{#                                          select                                                #}
+{#================================================================================================#}
+
+
+{#================================================================================================#}
+{#                                          button                                                #}
+
+{% macro ButtonA1SelectUnselectAll(text_select_all, text_unselect_all) %}
+    <button type="button" onclick="$(this).parent().find(':checkbox').prop('checked', true);" class="btn btn-link">{{ text_select_all }}</button> 
+    /
+    <button type="button" onclick="$(this).parent().find(':checkbox').prop('checked', false);" class="btn btn-link">{{ text_unselect_all }}</button>
+{% endmacro %}
+
+{#                                          button                                                #}
+{#================================================================================================#}
+
+
+
+{#================================================================================================#}
+{#                                          Modal                                                 #}
+
+
+{#
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal_">
+{{ forms.ModalBase('setting', include('extension/.twig') , {'button_save':button_save, 'button_close':button_close, 'title':'setting'}) }}
+#}
+{% macro ModalBase(id, body_content, i18n) %}
+
+    <div class="modal fade" id="modal_{{ id }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ button_close }}"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{ i18n.title }}</h4>
+                </div>
+                <div class="modal-body">{{ body_content }}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ i18n.button_close }}</button>
+                    <button type="button" class="btn btn-primary">{{ i18n.button_save }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}
+
+{#
+html = {header, body, footer}
+#}
+{% macro ModelTE(id, title, html, options) %}  
+<div class="modal fade" id="ModalТЕ_{{ id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" title>{{ title }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="text-center loader" style="display: none">
+                <h2>
+                    <strong>Loading...</strong>
+                    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                </h2>
+            </div>
+            <div class="modal-body">
+                
+                {{ html.body }}
+            </div>
+            <div class="modal-footer">
+                {% if html.footer %}
+                    {{ html.footer }}
+                {% else %}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %} 
+
+
+
+
+{#                                          Modal                                                 #}
+{#================================================================================================#}
+
+
+
+{#================================================================================================#}
+{#                                          Tab                                                   #}
+
+{% macro addTabJs(temp_id, selector, nav, body) %}
+    <script type="text/html" id="{{ temp_id }}">{{ body }}</script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('{{ selector }}:first .nav.nav-tabs:first').append('{{ nav }}');
+
+            $.template("{{ temp_id }}", $('#{{ temp_id }}').html());
+            $.tmpl('{{ temp_id }}', {}).append('{{ selector }}:first div.tab-content:first');
+
+        });
+    </script>
+{% endmacro %}
+
+
+{% macro addTabJsA1(temp_id, selector, nav_name, nav_link, body) %}
+    <script type="text/html" id="{{ temp_id }}">
+        <div class="tab-pane" id="tab-{{ nav_link }}">
+            {{ body }}
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('{{ selector }}:first .nav.nav-tabs:first').append(
+                    '<li><a href="#tab-{{ nav_link }}" data-toggle="tab">{{ nav_name }}</a></li>');
+
+            $.template("{{ temp_id }}", $('#{{ temp_id }}').html());
+            $.tmpl('{{ temp_id }}', {}).appendTo('{{ selector }}:first div.tab-content:first');
+
+        });
+    </script>
+{% endmacro %}
+
+
+{#                                          Tab                                                   #}
+{#================================================================================================#}
+
+
+{#================================================================================================#}
+{#                                          Breadcrumb                                            #}
+
+{% macro breadcrumbs(breadcrumbs) %}    
+    <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+            {% endfor %}
+    </ul>
+{% endmacro %}
+
+{#                                          Breadcrumb                                            #}
+{#================================================================================================#}
+
+
+{#================================================================================================#}
+{#                                          checkbox                                              #}
+
+{% macro checkbox(values, name) %}
+    
+{% endmacro %}
+
+{% macro MiltiCheckbox(items, item_id,item_name, values, name) %}
+<div class="well well-sm" style="height: 150px; overflow: auto;">
+    {% for item in items %}
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="{{ name }}[]" value="{{ item[item_id] }}" {% for value in values %}{{ value == item[item_id] ? 'checked="checked"':'' }}{% endfor %}> {{ item[item_name] }}
+        </label>   
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+{#
+list = array
+itemKey = {itemId, itemName}
+inpyt = {name, value(s)}
+options = {col, height}
+#}
+{% macro MiltiCheckboxColsV2(items, itemKey, input, options) %}
+    
+<div class="well well-sm" style="height: {{ options.height?? '150px'}}; overflow: auto;">
+    {% for item in items %}
+    <div class="checkbox col-sm-{{ options.col }}">
+        <label>
+            <input type="checkbox" name="{{ input.name }}[]" value="{{ item[itemKey.itemId] }}" {% for value in input.values %}{{ value == item[itemKey.itemId] ? 'checked="checked"':'' }}{% endfor %}> 
+            {{ item[itemKey.itemName] }}
+        </label>   
+    </div>
+    {% endfor %}
+</div>
+    
+{% endmacro %}
+
+{% macro MiltiCheckboxCols(items, item_id,item_name, values, name, col) %}
+<div class="well well-sm" style="height: 150px; overflow: auto;">
+    {% for item in items %}
+    <div class="checkbox col-sm-{{ col }}">
+        <label>
+            <input type="checkbox" name="{{ name }}[]" value="{{ item[item_id] }}" {% for value in values %}{{ value == item[item_id] ? 'checked="checked"':'' }}{% endfor %}> {{ item[item_name] }}
+        </label>   
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+
+{#                                          checkbox                                              #}
+{#================================================================================================#}
+{% macro notificationUpDateModuleJs(url) %}    
+    <script>
+        function getNotifications() {
+            $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> <div id="export_import_loading"><img src="view/image/export-import/loading.gif" />Getting messages</div>');
+            setTimeout(
+                    function () {
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ url }}',
+                            dataType: 'json',
+                            success: function (json) {
+                                if (json['error']) {
+                                    $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> ' + json['error'] + ' <span style="cursor:pointer;font-weight:bold;text-decoration:underline;float:right;" onclick="getNotifications();">Retry</span>');
+                                } else if (json['message']) {
+                                    $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> ' + json['message'] + '<br /><br />Currently used category IDs are between 2 and 90. Currently used product IDs are between 125 and 1412.');
+                                } else {
+                                    $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> ' + 'No messages');
+                                }
+                            },
+                            failure: function () {
+                                $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> ' + 'Could not load messages from MHCCORP.COM. <span style="cursor:pointer;font-weight:bold;text-decoration:underline;float:right;" onclick="getNotifications();">Retry</span>');
+                            },
+                            error: function () {
+                                $('#notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> ' + 'Could not load messages from MHCCORP.COM. <span style="cursor:pointer;font-weight:bold;text-decoration:underline;float:right;" onclick="getNotifications();">Retry</span>');
+                            }
+                        });
+                    },
+                    500
+                    );
+        }
+    </script>
+{% endmacro %}

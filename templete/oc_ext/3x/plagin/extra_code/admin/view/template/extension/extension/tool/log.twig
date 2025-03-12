@@ -1,0 +1,101 @@
+{% import "extension/extension/tool/macros.twig" as forms %}
+
+{% set loglevels = [
+{"id":"all", "name":text_ext_log_level_value_all},
+{"id":"emergency", "name":text_ext_log_level_value_emergency},
+{"id":"alert", "name":text_ext_log_level_value_alert},
+{"id":"critical", "name":text_ext_log_level_value_critical},
+{"id":"error", "name":text_ext_log_level_value_error},
+{"id":"warning", "name":text_ext_log_level_value_warning},
+{"id":"notice", "name":text_ext_log_level_value_notice},
+{"id":"info", "name":text_ext_log_level_value_info},
+{"id":"debug", "name":text_ext_log_level_value_debug}
+] %}
+
+<div id="log_warning" class="form-group hide">
+    <div class="warning col-sm-12">
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> 
+            <div id="log_warning_text"></div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">
+        {{ text_ext_log_status }}
+    </label>
+    <div class="col-sm-2">        
+        {{ forms.onoffswitch("setting[log][status]", setting.log.status ) }}
+    </div>
+    <label class="col-sm-2 control-label">
+        {{ text_ext_log_level }}
+    </label>
+
+    <div class="col-sm-2">
+        {{ forms.Select(loglevels, 'id', 'name', 'setting[log][level]', setting.log.level, text_ext_log_level) }}
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">    
+        <i class="fa fa-filter" aria-hidden="true"></i> {{ text_ext_log_filter }}filter
+    </div>
+    <div class="panel-body">        
+        <div class="form-group">
+
+            <label class="col-sm-2 control-label">
+                <i class="fa" aria-hidden="true"></i> {{ text_ext_log_filter_session }}
+            </label>
+            <div class="col-sm-2">                                    
+                <input id="extLogFilterSession" value="" class="form-control">
+            </div>
+
+            <label class="col-sm-2 control-label">
+                <i class="fa" aria-hidden="true"></i> {{ text_ext_log_filter_level }}
+            </label>
+            <div class="col-sm-2">                                    
+                {{ forms.Select(loglevels, 'id', 'name', 'extLogFilterLevel') }}
+            </div>
+
+            <label class="col-sm-2 control-label">
+                <i class="fa" aria-hidden="true"></i> {{ text_ext_log_filter_limit }}
+            </label>
+            <div class="col-sm-2">                             
+                <input id="extLogFilterLimit" value="" class="form-control">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">       
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                <i class="fa fa-repeat" aria-hidden="true"></i> {{ text_ext_log_autoupdate }}:
+            </label>
+            <div class="col-sm-2">        
+                <select class="form-control">
+                    <option value="0" selected="selected">off{{ text_ext_log_autoupdate_value_off }}</option>
+                    <option value="2" >{{ text_ext_log_autoupdate_value_2 }}2c</option>
+                    <option value="5" >{{ text_ext_log_autoupdate_value_5 }}5c</option>
+                    <option value="60" >{{ text_ext_log_autoupdate_value_60 }}1m</option>
+                    <option value="300" >{{ text_ext_log_autoupdate_value_300 }}5m</option>
+                </select>
+            </div>
+            <div class="col-sm-8"> 
+
+                <a id="log_refresh" onclick="nt_log_reload(this, '{{ log_type }}')" data-toggle="tooltip" class="btn btn-warning">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a onclick="nt_log_downloader(this, '{{ log_type }}')" target="_blank" data-toggle="tooltip" class="btn btn-primary">
+                    <i class="fa fa-download"></i>
+                </a>
+                <a onclick="nt_log_clear(this, '{{ log_type }}')" data-toggle="tooltip" class="btn btn-danger">
+                    <i class="fa fa-eraser"></i>
+                </a>    
+
+            </div>
+        </div>
+        <textarea  rows="28" id="log-{{ log_type }}" readonly="" class="form-control">{{ log_text }}</textarea>
+    </div>
+</div>
+

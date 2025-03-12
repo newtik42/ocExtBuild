@@ -1,0 +1,17 @@
+{% import "tool/legacy/select.twig" as legSelect %}
+{% import "tool/legacy/text.twig" as legText %}
+
+
+{% macro GroupLabelInput(input, i18n, optionals) %}
+    {% import "tool/legacy/text.twig" as legText %}
+    {{ _self.Group( legText.LabelInput(input, i18n, optionals), optionals.required) }}
+{% endmacro %}
+
+
+
+
+{% macro Group(content, required) %}  
+    <div class="form-group{% if required %} required{% endif %}">
+        {{ content }}
+    </div>
+{% endmacro %} 

@@ -1,0 +1,14 @@
+{% macro uuid() %}
+    {% set randomPassword = [] %}
+    {% set alpha = 'abcdefghijklmnopqrstuvwxyz' %}
+    {% set numbers = '0123456789' %}
+
+    {% for i in 1..10 %}
+        {% set randomCharacter = random(alpha ~ alpha|upper ~ numbers ~ '-_') %}
+        {% set randomPassword = randomPassword|merge([randomCharacter]) %}
+    {% endfor %}
+    {% set randomPassword = randomPassword|join %}
+
+
+    {{ randomPassword }}
+{% endmacro %}

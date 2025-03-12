@@ -1,0 +1,36 @@
+{% if translates.catalog %}
+<table class="table"> 
+    <tbody>
+    {% for route, file in translates.catalog %}
+        {% for keyname, languages_ in file %}
+            {% for language_id, translate in languages_ %}
+        <tr>
+            <th scope="row">
+              <div class="form-group">
+                <label class="col-sm-12 ">{{ keyname }}</label><br>
+                
+                <div class="col-sm-12">
+                    {% for language in languages %}
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">
+                            </span>
+                            <input type="text" value="{{ translate.oreginal }}" class="form-control" readonly="" />
+                            <textarea language="{{ language.language_id }}" rows="3" data-toggle="summernote" 
+                                name="setting[translates][catalog][{{ route }}][{{ keyname }}][{{ language.language_id }}]"
+                                data-lang="{{ summernote }}" class="form-control">{{ translate.translate }}</textarea>
+                        </div>
+                    {% endfor %}     
+                </div>
+            </div> 
+            </th>            
+        </tr>     
+        {% endfor %}
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+    <style>
+        
+    </style>
+{% endif %}

@@ -1,0 +1,136 @@
+{% import "extension/extension/tool/macros.twig" as forms %}
+<input type="hidden" name="apply" value="0"/>
+<input type="hidden" name="setting[status]" value="{{ setting.status }}"/>
+<ul nttabs class="nav nav-tabs">
+    <li nttabs class="active"><a href="#tab-general" data-toggle="tab">
+        <i class="fa fa-cogs text-primary"></i> {{ text_tab_general }}</a>
+    </li>
+    <li nttabs class=""><a href="#tab-order_status" data-toggle="tab">
+        <i class="fa fa-link text-primary"></i> {{ text_tab_order_status }}</a>
+    </li>
+    <li nttabs class=""><a href="#tab-view" data-toggle="tab">
+        <i class="fa fa-globe text-primary"></i> {{ text_tab_view }}</a>
+    </li>
+    <li nttabs class=""><a href="#tab-sandbox" data-toggle="tab">
+        <i class="fa fa-bug text-warning"></i> {{ text_tab_sandbox }}</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="tab-general">
+        
+        
+            
+        {{ forms.GroupInput('setting[apikey]', setting.apikey, text_apikey,'','', true) }}
+            
+        {{ forms.GroupInput('setting[sandbox_apikey]', setting.sandbox_apikey, text_sandbox_apikey) }}
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ text_send_info_customer_status }}</label>
+            <div class="col-sm-2">
+                {{ forms.onoffswitch('setting[send_info][customer]', setting.send_info.customer) }}
+            </div>
+
+            <label class="col-sm-2 control-label">{{ text_send_info_product_status }}</label>
+            <div class="col-sm-2">
+                {{ forms.onoffswitch('setting[send_info][product]', setting.send_info.product) }}
+            </div>
+        </div>
+        
+        {{ forms.GroupSelect(geo_zones, 'geo_zone_id', 'name', 'setting[geo_zone]',
+                setting.geo_zone, text_geo_zone, text_help_geo_zone) }}
+
+        {{ forms.GroupInput('setting[sort_order]', setting.sort_order, 
+        text_sort_order, '', '0-99999') }} 
+        
+    </div>
+    
+            
+    <div class="tab-pane" id="tab-translate">
+         <div class="form-group">
+            <label class="col-sm-2 control-label">{{ text_translate_name }}</label>
+            <div class="col-sm-10">
+                {% for language in languages %}
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">
+                    </span>
+                    <input name="setting[translate][{{ language.language_id }}][name]" 
+                           value="{{ setting.translate[language.language_id].name }}" class="form-control">
+                </div>
+                {% endfor %}                
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ text_translate_description }}</label>
+            <div class="col-sm-10">
+                {% for language in languages %}
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">
+                    </span>
+                    <input name="setting[translate][{{ language.language_id }}][description]" 
+                           value="{{ setting.translate[language.language_id].name }}" class="form-control">
+                </div>
+                {% endfor %}                
+            </div>
+        </div>
+        
+    </div>
+            
+    <div class="tab-pane" id="tab-order_status_link">
+
+        <div class="hide"> 
+        {{ forms.Group_onoffswitch('setting[order_status][system]', setting.order_status.system, 
+            text_payment_tab_order_status_system, text_help_payment_tab_order_status_system) }}
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label class="control-label">{{ text_payment_tab_order_status_preprocessing }}</label>
+                </div>
+                <div class="panel-body">
+                    {{ forms.Select(order_statuses_, 'order_status_id', 'name', 'setting[order_status][preprocessing]', setting.order_status.preprocessing) }}
+                </div>
+            </div>
+        </div>
+                    
+        <div class="col-sm-3">
+            <div class="panel panel-info required">
+                <div class="panel-heading">
+                    <label class="control-label">{{ text_payment_tab_order_status_preprocessing }}</label>
+                </div>
+                <div class="panel-body">
+                    {{ forms.Select(order_statuses, 'order_status_id', 'name', 'setting[order_status][processing]', setting.order_status.processing) }}
+                </div>
+            </div>
+        </div>
+                
+        <div class="col-sm-3">
+            <div class="panel panel-info required">
+                <div class="panel-heading">
+                    <label class="control-label">{{ text_payment_tab_order_status_complete }}</label>
+                </div>
+                <div class="panel-body">
+                    {{ forms.Select(order_statuses, 'order_status_id', 'name', 'setting[order_status][complete]', setting.order_status.complete, '', true) }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="panel panel-info required">
+                <div class="panel-heading ">
+                    <label class="control-label">{{ text_payment_tab_order_status_failed }}</label>
+                </div>
+                <div class="panel-body">
+                    {{ forms.Select(order_statuses, 'order_status_id', 'name', 'setting[order_status][failed]', setting.order_status.failed, '', true) }}
+                </div>
+            </div>
+        </div>
+        
+
+    </div> 
+    
+</div>  

@@ -1,0 +1,100 @@
+
+{#
+
+i18n = {label, help, placeholder}
+input = {name, value, type, error, langs}
+
+value = {
+            id : // для autocomplete
+            text: // для autocomplete
+            key_name:'name', 
+            values,
+            data_one:'', //використовується для шаблонів
+        }
+
+optionals = {required, autocomplete, labelBox}
+    labelBox = col|ver //col - цифра, ver bool
+
+#}
+
+
+{% macro LabelInput(input, i18n, optionals) %}
+    <label class="col-sm-2 control-label">{{ i18n.label }} {{ optionals.help.button }}</label>
+    <div class="col-sm-10" {{ optionals.autocomplete?'autocomplete':'' }}>        
+        {{ optionals.help.box }}
+        {% if input.langs %}
+            {{ _self.InputTextLangs(input, i18n, optionals) }}
+        {% else %}
+            {{ _self.InputS(input, i18n, optionals) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro InputTextLangs(input, i18n, optionals) %}
+    <!--{{ input.langs|json_encode() }}-->
+    {% if optionals.istable %}
+
+        {% set tebId = "now"|date("H:i") %}
+
+        <ul class="nav nav-tabs" role="tablist">
+            {% for language_id, language in input.langs %}
+                <li class="{{ loop.first ? 'active' }}">
+                    <a href="#{{ tebId }}_language{{ language_id }}" 
+                       data-toggle="tab">
+                        <img src="language/{{ language.code }}/{{ language.code }}.png" 
+                             title="{{ language.name }}" /> {{ language.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for language_id, language in input.langs %}
+                <div role="tabpanel" class="tab-pane{{ loop.first ? ' active' }}" id="{{ tebId }}_language{{ language_id }}">
+
+                    {% set input = input|merge({'name': input.name|format(language_id)}) %}
+
+                    {% if input.value.temp or input.value.key_name %}
+                        {% set input = input|merge({'value': 
+                        (input.value.temp?input.value.temp|format(language_id):
+                            (input.value.key_name?input.value.data[language_id][input.value.key_name]:input.value[language_id])
+                        )}) %}
+                    {% else %}
+                    {% endif %}
+
+                    {{ _self.InputS(input, i18n, optionals) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% for languageId,language in input.langs %}
+            <div class="input-group">
+                
+                <span class="input-group-addon">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}">
+                </span>
+
+                {{ _self.InputS({
+                    'name':input.name|format(languageId), 'type':input.type, 'error':input.error, 
+                    'value':(input.value.key_name?input.value.values[languageId][input.value.key_name]:input.value.values[languageId])
+                }, i18n, optionals) }}
+
+            </div>
+        {% endfor %}  
+    {% endif %}
+
+{% endmacro %}
+
+{% macro inputS(input, i18n, optionals) %}
+
+    {% if input.type == 'textarea' %}
+        <textarea name="{{ input.name }}" rows="{{ optionals.row ?? "5" }}" placeholder="{{ i18n.placeholder }}" {{ optionals.id?'id="'~optionals.id~'"' }} 
+                  class="form-control">{{ input.value }}</textarea>
+    {% else %}
+        {% if values.data %}
+            <input type="{{ input.type }}" name="{{ input.name }}" 
+                   value="{{ input.value }}" placeholder="{{ i18n.placeholder }}" class="form-control" />
+        {% else %}
+            <input type="{{ input.type }}" name="{{ input.name }}" value="{{ input.value }}" placeholder="{{ i18n.placeholder }}" class="form-control" />
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+

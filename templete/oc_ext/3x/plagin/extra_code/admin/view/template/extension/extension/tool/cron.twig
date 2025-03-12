@@ -1,0 +1,118 @@
+{% import "extension/extension/tool/macros.twig" as forms %}
+
+<script>
+function genCron() {
+    let cronTokenGen = ''
+    string = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    for (i = 0; i < 8; i++) {
+        cronTokenGen += string[Math.floor(Math.random() * (string.length - 1))]
+    }
+    $('[name="setting[cron][token]"]').val(cronTokenGen)
+    let cmd = '{{ cmd }}';
+    let binphp = '{{ binphp }}';
+    $('[input_cmd]').val(cmd + cronTokenGen)
+    $('[input_all_cmd]').val(binphp + cmd + cronTokenGen)
+}
+</script>
+<div class="panel panel-default">
+    <div class="panel-heading"><i class="fa fa-question-circle"></i> {{ text_panel_heading }}</div>
+    <div class="panel-body">
+
+        <div class="form-group required">
+            <label class="col-sm-2 control-label">{{ text_cron_token }}</label>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="text" name="setting[cron][token]" class="form-control" placeholder="" value="{{ cron_token }}">
+                    <span class="input-group-btn">
+                        <button class="btn btn btn-warning" 
+                                onclick="genCron()"
+                                type="button"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <p>{{ text_text1 }}
+            <a href="https://newtik-opencart.com/nastrojka-raspisanie-zadach-cron" target="_blank" class="alert-link">{{ text_text2 }}</a> 
+        </p>
+        <p>{{ text_text3 }}</p>
+        
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="input-group">
+                    <div class="input-group-addon">{{ text_text5 }}</div>
+                    <input input_cmd type="text" value="{{ cmd }}{{ cron_token }}" class="form-control">
+                    <div class="input-group-btn">
+                        <button type="button" data-toggle="tooltip" title="" class="btn btn-default" 
+                                onclick="NTcopyToClipboard($('[input_cmd]'))"
+                                data-original-title="{{ text_text6 }}">                            
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="input-group">
+                    <div class="input-group-addon">{{ text_text5 }}</div>
+                    <input input_all_cmd type="text" value="{{ binphp }}{{ cmd }}{{ cron_token }}" class="form-control">
+                    <div class="input-group-btn">
+                        <button type="button" data-toggle="tooltip" title="" class="btn btn-default" 
+                                onclick="NTcopyToClipboard($('[input_all_cmd]'))"
+                                data-original-title="{{ text_text6 }}">                            
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                            
+                            
+                            
+    </div>
+                            
+    {#<div class="form-group hide">
+  <label class="col-sm-3 control-label" new-feature="">Команда для вызова по cron (планировщик)</label>
+  <div class="col-sm-9">
+    <div id="cron-manager">
+      <div class="input-group input-group">
+        <div class="input-group-btn dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-clock-o"></i> <span class="dropdown-label">Каждое воскресенье в 04:00</span> <i class="fa fa-angle-down"></i></button>
+          <ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Выберите период копирования<br>либо укажите свой</li>
+            <li class="divider"></li>
+
+            <li class=""><a role="menuitem" href="#0 * * * *">Каждый час</a></li>
+            <li class=""><a role="menuitem" href="#0 */3 * * *">Каждые 3 часа</a></li>
+            <li><a role="menuitem" href="#0 4 * * *">Каждые сутки в 04:00</a></li>
+            <li class="active"><a role="menuitem" href="#0 4 * * 0">Каждое воскресенье в 04:00</a></li>
+            <li><a role="menuitem" href="#0 */5 * * 6,0">Каждые 5 часов в выходные</a></li>
+            <li><a role="menuitem" href="#0 0 1 * *">Каждого 1-го числа нового месяца</a></li>
+          </ul>
+        </div>
+        <div class="input-group-addon">или</div>
+        <input type="text" name="cron_period_manual" value="" class="form-control" placeholder="Свой период">
+      </div><!-- /.input-group -->
+    </div><br>
+       
+    <p>Команда добавления вызова через PHP bin</p>
+    <lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="width: 1024.58px !important; height: 20px !important; transform: none !important; transform-origin: 0px 0px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 1024.58px !important; height: 20px !important;"><canvas class="lt-highlighter__canvas" width="330" height="17" style="display: none; top: 2px !important; left: 95px !important;"></canvas></lt-div></lt-div></lt-highlighter><kbd contenteditable="true" onclick="document.execCommand('selectAll', false, null)" style="font-size: 14px;" data-lt-tmp-id="lt-767646" spellcheck="false" data-gramm="false"><span class="cron-period">0 4 * * 0</span> /usr/local/php73/bin/php -f /home/newtik/mopsops.com.ua/www/admin/controller/extension/module/ocfilter/cron.php</kbd>
+    <br><br>
+    <p class="ocf-checkbox"><input type="checkbox" name="copy_cron_wget" value="1" id="input-copy-cron-wget" autocomplete="off"> <label for="input-copy-cron-wget">Разрешить вызывать через Wget</label></p>
+    <lt-highlighter contenteditable="false" data-lt-linked="1" style="display: none; z-index: 1 !important;"><lt-div spellcheck="false" class="lt-highlighter__wrapper" style="width: 839.75px !important; height: 20px !important; transform: none !important; transform-origin: 0px 0px !important; zoom: 1 !important;"><lt-div class="lt-highlighter__scroll-element" style="top: 0px !important; left: 0px !important; width: 839.75px !important; height: 20px !important;"></lt-div></lt-div></lt-highlighter><kbd contenteditable="true" onclick="document.execCommand('selectAll', false, null)" style="font-size: 14px;" class="cron-command-wget ocf-opacity-50" data-lt-tmp-id="lt-468576" spellcheck="false" data-gramm="false"><span class="cron-period">0 4 * * 0</span> wget -t 1 -O - https://mopsops.com.ua/admin/controller/extension/module/ocfilter/cron.php</kbd>
+             
+    <p class="help-block">Удобный редактор периода для cron <a href="https://crontab.guru/" target="_blank">здесь</a><br>После указания параметров копирования <b>обязательно</b> сохраните настройки</p>
+  </div>
+</div>#}
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><i class="fa fa-question-circle"></i> {{ text_panel_heading_report }}</div>
+    <div class="panel-body">
+
+        {{ viewLog }}
+
+    </div>
+</div>
